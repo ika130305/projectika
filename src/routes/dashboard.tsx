@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Shield, Bell, Activity, Database, Users, AlertTriangle, CheckCircle2,
   Search, ChevronRight, ArrowLeft, FileText, Settings, Filter,
@@ -112,11 +112,41 @@ const RECENT_BLOCKS = [
   { n: 482104, h: "0x9e44bb02...e21a", tx: 8, t: "60s ago" },
 ];
 
+const STORAGE_KEY = "chainguard:dashboard:v1";
+
 function Dashboard() {
   const [filter, setFilter] = useState<"all" | LogStatus>("all");
   const [query, setQuery] = useState("");
   const [nik, setNik] = useState("");
   const [submittedNik, setSubmittedNik] = useState("");
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load persisted state on mount (client only — avoids SSR hydration mismatch)
+  useEffect(() => {
+    try {
+      const raw = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
+      if (raw) {
+        const s = JSON.parse(raw) as Partial<{ filter: "all" | LogStatus; query: string; nik: string; submittedNik: string }>;
+        if (s.filter) setFilter(s.filter);
+        if (typeof s.query === "string") setQuery(s.query);
+        if (typeof s.nik === "string") setNik(s.nik);
+        if (typeof s.submittedNik === "string") setSubmittedNik(s.submittedNik);
+      }
+    } catch {
+      /* ignore */
+    }
+    setHydrated(true);
+  }, []);
+
+  // Persist whenever the filter / search state changes (after hydration)
+  useEffect(() => {
+    if (!hydrated || typeof window === "undefined") return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ filter, query, nik, submittedNik }));
+    } catch {
+      /* ignore quota errors */
+    }
+  }, [hydrated, filter, query, nik, submittedNik]);
 
   const nikDigits = submittedNik.replace(/\D/g, "");
 
@@ -294,7 +324,7 @@ function Sidebar() {
   ];
   return (
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-border bg-background p-4 lg:block">
-      <Link to="/" className="flex items-center gap-2 px-2 py-2">
+      <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2">
         <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
           <Shield className="h-4 w-4" />
         </div>
