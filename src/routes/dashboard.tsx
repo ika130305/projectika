@@ -27,17 +27,19 @@ interface LogEntry {
   status: LogStatus;
   block: number;
   hash: string;
+  nik: string;
+  ownerName: string;
 }
 
 const LOGS: LogEntry[] = [
-  { id: "1", time: "14:32:08", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Verifikasi klaim asuransi", permission: "read:medical", status: "valid", block: 482109, hash: "0xa3f192e8" },
-  { id: "2", time: "14:28:51", entity: "Bank Mandiri", category: "Identitas", purpose: "KYC pembukaan rekening", permission: "read:identity", status: "valid", block: 482107, hash: "0x7c2b41d9" },
-  { id: "3", time: "14:21:14", entity: "Unknown Entity (TX-9E44)", category: "NIK & Alamat", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 482104, hash: "0x9e44bb02" },
-  { id: "4", time: "13:58:02", entity: "Tokopedia", category: "Profil", purpose: "Update alamat pengiriman", permission: "write:profile", status: "valid", block: 482099, hash: "0x5d187a3c" },
-  { id: "5", time: "13:44:37", entity: "Gojek", category: "Lokasi", purpose: "Pencocokan driver terdekat", permission: "read:location", status: "valid", block: 482094, hash: "0x2f81cc45" },
-  { id: "6", time: "12:55:19", entity: "Telkomsel", category: "Kontak", purpose: "Verifikasi nomor telepon", permission: "read:phone", status: "pending", block: 482082, hash: "0x88a30f12" },
-  { id: "7", time: "11:30:41", entity: "Pemerintah Daerah", category: "Identitas", purpose: "Validasi domisili", permission: "read:identity", status: "valid", block: 482061, hash: "0x4c19ee77" },
-  { id: "8", time: "10:12:55", entity: "Data Broker XY", category: "Profil", purpose: "Aktivitas marketing", permission: "—", status: "alert", block: 482044, hash: "0xbb04dd91" },
+  { id: "1", time: "14:32:08", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Verifikasi klaim asuransi", permission: "read:medical", status: "valid", block: 482109, hash: "0xa3f192e8", nik: "3201234567893821", ownerName: "Andi Pratama" },
+  { id: "2", time: "14:28:51", entity: "Bank Mandiri", category: "Identitas", purpose: "KYC pembukaan rekening", permission: "read:identity", status: "valid", block: 482107, hash: "0x7c2b41d9", nik: "3201234567893821", ownerName: "Andi Pratama" },
+  { id: "3", time: "14:21:14", entity: "Unknown Entity (TX-9E44)", category: "NIK & Alamat", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 482104, hash: "0x9e44bb02", nik: "3201234567893821", ownerName: "Andi Pratama" },
+  { id: "4", time: "13:58:02", entity: "Tokopedia", category: "Profil", purpose: "Update alamat pengiriman", permission: "write:profile", status: "valid", block: 482099, hash: "0x5d187a3c", nik: "3175098712340007", ownerName: "Siti Nurhaliza" },
+  { id: "5", time: "13:44:37", entity: "Gojek", category: "Lokasi", purpose: "Pencocokan driver terdekat", permission: "read:location", status: "valid", block: 482094, hash: "0x2f81cc45", nik: "3175098712340007", ownerName: "Siti Nurhaliza" },
+  { id: "6", time: "12:55:19", entity: "Telkomsel", category: "Kontak", purpose: "Verifikasi nomor telepon", permission: "read:phone", status: "pending", block: 482082, hash: "0x88a30f12", nik: "3273014509881122", ownerName: "Budi Santoso" },
+  { id: "7", time: "11:30:41", entity: "Pemerintah Daerah", category: "Identitas", purpose: "Validasi domisili", permission: "read:identity", status: "valid", block: 482061, hash: "0x4c19ee77", nik: "3273014509881122", ownerName: "Budi Santoso" },
+  { id: "8", time: "10:12:55", entity: "Data Broker XY", category: "Profil", purpose: "Aktivitas marketing", permission: "—", status: "alert", block: 482044, hash: "0xbb04dd91", nik: "3273014509881122", ownerName: "Budi Santoso" },
 ];
 
 function Dashboard() {
