@@ -42,6 +42,15 @@ const LOGS: LogEntry[] = [
   { id: "8", time: "10:12:55", entity: "Data Broker XY", category: "Profil", purpose: "Aktivitas marketing", permission: "—", status: "alert", block: 482044, hash: "0xbb04dd91", nik: "3273014509881122", ownerName: "Budi Santoso" },
 ];
 
+const RECENT_BLOCKS = [
+  { n: 482109, h: "0xa3f192e8...92e8", tx: 4, t: "0s ago" },
+  { n: 482108, h: "0xd210ab38...51cf", tx: 7, t: "12s ago" },
+  { n: 482107, h: "0x7c2b41d9...64ad", tx: 2, t: "24s ago" },
+  { n: 482106, h: "0x6a7f19ef...8b30", tx: 6, t: "36s ago" },
+  { n: 482105, h: "0xc84370ca...110d", tx: 3, t: "48s ago" },
+  { n: 482104, h: "0x9e44bb02...e21a", tx: 8, t: "60s ago" },
+];
+
 function Dashboard() {
   const [filter, setFilter] = useState<"all" | LogStatus>("all");
   const [query, setQuery] = useState("");
@@ -471,12 +480,6 @@ function AlertsCard() {
 }
 
 function BlockchainCard() {
-  const blocks = Array.from({ length: 6 }, (_, i) => ({
-    n: 482109 - i,
-    h: `0x${Math.random().toString(16).slice(2, 10)}...${Math.random().toString(16).slice(2, 6)}`,
-    tx: Math.floor(Math.random() * 8) + 1,
-    t: `${i * 12}s ago`,
-  }));
   return (
     <div className="rounded-xl border border-border bg-card shadow-card">
       <div className="flex items-center justify-between border-b border-border p-5">
@@ -489,7 +492,7 @@ function BlockchainCard() {
         </span>
       </div>
       <div className="grid gap-px overflow-hidden bg-border md:grid-cols-3 lg:grid-cols-6">
-        {blocks.map((b) => (
+        {RECENT_BLOCKS.map((b) => (
           <div key={b.n} className="bg-card p-4 transition-colors hover:bg-surface">
             <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">block</p>
             <p className="mt-1 font-display text-xl font-bold tracking-tight text-accent">#{b.n.toLocaleString('en-US')}</p>
