@@ -368,13 +368,13 @@ function Sidebar({
         ))}
       </nav>
 
-      <Link
-        to="/dashboard"
-        className="mt-6 flex items-center gap-2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+      <button
+        type="button"
+        className="mt-6 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:text-foreground"
         onClick={onDashboardReset}
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke dashboard
-      </Link>
+      </button>
 
       <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-border bg-surface p-3">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Node Status</p>
