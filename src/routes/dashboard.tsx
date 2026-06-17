@@ -105,7 +105,7 @@ function Dashboard() {
               nik={nik}
               setNik={setNik}
               submittedNik={submittedNik}
-              onSubmit={() => setSubmittedNik(nik)}
+              onSubmit={(v) => setSubmittedNik((v ?? nik).replace(/\D/g, "").slice(0, 16))}
               onClear={() => {
                 setNik("");
                 setSubmittedNik("");
@@ -140,7 +140,7 @@ function NikSearch({
   nik: string;
   setNik: (v: string) => void;
   submittedNik: string;
-  onSubmit: () => void;
+  onSubmit: (value?: string) => void;
   onClear: () => void;
   resultCount: number | null;
 }) {
