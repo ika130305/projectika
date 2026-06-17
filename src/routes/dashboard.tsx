@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import {
   Shield, Bell, Activity, Database, Users, AlertTriangle, CheckCircle2,
   Search, ChevronRight, ArrowLeft, FileText, Settings, Filter,
+  Fingerprint, XCircle,
 } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
