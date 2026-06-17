@@ -390,7 +390,7 @@ function ActivityCard({
                   <Fingerprint className="h-3 w-3" /> NIK {log.nik}
                 </span>
                 <span className="rounded bg-surface px-1.5 py-0.5">{log.permission}</span>
-                <span>block #{log.block.toLocaleString()}</span>
+                <span>block #{log.block.toLocaleString('en-US')}</span>
                 <span>{log.hash}</span>
               </div>
             </div>
@@ -492,7 +492,7 @@ function BlockchainCard() {
         {blocks.map((b) => (
           <div key={b.n} className="bg-card p-4 transition-colors hover:bg-surface">
             <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">block</p>
-            <p className="mt-1 font-display text-xl font-bold tracking-tight text-accent">#{b.n.toLocaleString()}</p>
+            <p className="mt-1 font-display text-xl font-bold tracking-tight text-accent">#{b.n.toLocaleString('en-US')}</p>
             <p className="mt-2 truncate font-mono text-[10px] text-muted-foreground">{b.h}</p>
             <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground">
               <span>{b.tx} tx</span>
