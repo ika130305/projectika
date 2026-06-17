@@ -227,7 +227,7 @@ function NikSearch({
             <button
               key={s.nik}
               type="button"
-              onClick={() => { setNik(s.nik); onSubmit(); }}
+              onClick={() => { setNik(s.nik); onSubmit(s.nik); }}
               className="group rounded-md border border-border bg-background px-2 py-1 text-left transition-colors hover:border-accent hover:bg-accent/5"
             >
               <span className="block font-mono text-[11px] text-foreground">{s.nik}</span>
