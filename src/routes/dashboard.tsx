@@ -120,6 +120,7 @@ function Dashboard() {
   const [nik, setNik] = useState("");
   const [submittedNik, setSubmittedNik] = useState("");
   const [hydrated, setHydrated] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // Load persisted state on mount (client only — avoids SSR hydration mismatch)
   useEffect(() => {
