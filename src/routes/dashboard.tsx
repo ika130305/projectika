@@ -45,13 +45,22 @@ const LOGS: LogEntry[] = [
 function Dashboard() {
   const [filter, setFilter] = useState<"all" | LogStatus>("all");
   const [query, setQuery] = useState("");
+  const [nik, setNik] = useState("");
+  const [submittedNik, setSubmittedNik] = useState("");
+
+  const nikDigits = submittedNik.replace(/\D/g, "");
 
   const filtered = useMemo(
     () =>
-      LOGS.filter((l) => (filter === "all" ? true : l.status === filter)).filter((l) =>
-        [l.entity, l.category, l.purpose, l.permission].join(" ").toLowerCase().includes(query.toLowerCase()),
-      ),
-    [filter, query],
+      LOGS.filter((l) => (filter === "all" ? true : l.status === filter))
+        .filter((l) => (nikDigits ? l.nik.includes(nikDigits) : true))
+        .filter((l) =>
+          [l.entity, l.category, l.purpose, l.permission, l.nik, l.ownerName]
+            .join(" ")
+            .toLowerCase()
+            .includes(query.toLowerCase()),
+        ),
+    [filter, query, nikDigits],
   );
 
   const alerts = LOGS.filter((l) => l.status === "alert").length;
@@ -65,6 +74,17 @@ function Dashboard() {
 
           <div className="mx-auto max-w-7xl space-y-6 p-6 lg:p-8">
             <Header />
+            <NikSearch
+              nik={nik}
+              setNik={setNik}
+              submittedNik={submittedNik}
+              onSubmit={() => setSubmittedNik(nik)}
+              onClear={() => {
+                setNik("");
+                setSubmittedNik("");
+              }}
+              resultCount={nikDigits ? filtered.length : null}
+            />
             <KpiGrid />
             <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
               <ActivityCard
@@ -83,6 +103,93 @@ function Dashboard() {
           </div>
         </main>
       </div>
+    </div>
+  );
+}
+
+function NikSearch({
+  nik, setNik, submittedNik, onSubmit, onClear, resultCount,
+}: {
+  nik: string;
+  setNik: (v: string) => void;
+  submittedNik: string;
+  onSubmit: () => void;
+  onClear: () => void;
+  resultCount: number | null;
+}) {
+  const formatted = nik.replace(/\D/g, "").slice(0, 16);
+  const isValidLength = formatted.length === 16;
+  return (
+    <div className="rounded-xl border border-border bg-card p-5 shadow-card">
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="flex items-center gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-md bg-accent/10 text-accent">
+            <Fingerprint className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="font-display text-base font-semibold">Cari berdasarkan NIK</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Telusuri jejak akses untuk Nomor Induk Kependudukan tertentu.
+            </p>
+          </div>
+        </div>
+        <form
+          className="flex flex-1 flex-wrap items-center gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setNik(formatted);
+            onSubmit();
+          }}
+        >
+          <div className="relative min-w-[260px] flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              value={formatted}
+              onChange={(e) => setNik(e.target.value)}
+              inputMode="numeric"
+              maxLength={16}
+              placeholder="Masukkan 16 digit NIK..."
+              className="h-10 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm tracking-wider outline-none transition-colors focus:border-ring"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={formatted.length === 0}
+            className="h-10 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+          >
+            Telusuri
+          </button>
+          {submittedNik && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="grid h-10 w-10 place-items-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="Reset pencarian NIK"
+            >
+              <XCircle className="h-4 w-4" />
+            </button>
+          )}
+        </form>
+      </div>
+
+      {submittedNik && (
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-md border border-border bg-surface px-3 py-2 text-xs">
+          <span className="font-mono uppercase tracking-wider text-muted-foreground">NIK aktif</span>
+          <span className="font-mono font-medium text-foreground">{submittedNik}</span>
+          <span className="text-muted-foreground">·</span>
+          {resultCount !== null && resultCount > 0 ? (
+            <span className="text-success">{resultCount} entri ditemukan</span>
+          ) : (
+            <span className="text-destructive">Tidak ada entri untuk NIK ini</span>
+          )}
+        </div>
+      )}
+
+      {nik && !isValidLength && !submittedNik && (
+        <p className="mt-3 font-mono text-[10px] text-warning">
+          NIK terdiri dari 16 digit · saat ini {formatted.length}/16
+        </p>
+      )}
     </div>
   );
 }
