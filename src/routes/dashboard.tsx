@@ -40,6 +40,24 @@ const LOGS: LogEntry[] = [
   { id: "6", time: "12:55:19", entity: "Telkomsel", category: "Kontak", purpose: "Verifikasi nomor telepon", permission: "read:phone", status: "pending", block: 482082, hash: "0x88a30f12", nik: "3273014509881122", ownerName: "Budi Santoso" },
   { id: "7", time: "11:30:41", entity: "Pemerintah Daerah", category: "Identitas", purpose: "Validasi domisili", permission: "read:identity", status: "valid", block: 482061, hash: "0x4c19ee77", nik: "3273014509881122", ownerName: "Budi Santoso" },
   { id: "8", time: "10:12:55", entity: "Data Broker XY", category: "Profil", purpose: "Aktivitas marketing", permission: "—", status: "alert", block: 482044, hash: "0xbb04dd91", nik: "3273014509881122", ownerName: "Budi Santoso" },
+  // Keluarga Wijaya (KK 3321100311700001)
+  { id: "9", time: "09:48:22", entity: "Dukcapil", category: "Kartu Keluarga", purpose: "Pembaruan data KK", permission: "read:family", status: "valid", block: 482028, hash: "0x71ae22cd", nik: "3321100311700001", ownerName: "Hendra Wijaya" },
+  { id: "10", time: "09:30:11", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Cek kepesertaan keluarga", permission: "read:medical", status: "valid", block: 482015, hash: "0x33fa90b1", nik: "3321100311700001", ownerName: "Hendra Wijaya" },
+  { id: "11", time: "09:12:05", entity: "Bank BCA", category: "Identitas", purpose: "Verifikasi nasabah", permission: "read:identity", status: "valid", block: 482001, hash: "0x55cd11e2", nik: "3321100311700002", ownerName: "Maya Wijaya" },
+  { id: "12", time: "08:54:39", entity: "Shopee", category: "Profil", purpose: "Update alamat pengiriman", permission: "write:profile", status: "valid", block: 481990, hash: "0x9012aaef", nik: "3321100311700002", ownerName: "Maya Wijaya" },
+  { id: "13", time: "08:33:50", entity: "Unknown Entity (TX-7F12)", category: "NIK & Alamat", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 481978, hash: "0x7f12abcd", nik: "3321100311700002", ownerName: "Maya Wijaya" },
+  { id: "14", time: "08:10:17", entity: "Sekolah SDN 03", category: "Identitas Anak", purpose: "Pendaftaran ulang siswa", permission: "read:identity", status: "valid", block: 481960, hash: "0x4488ee21", nik: "3321100311700003", ownerName: "Rio Wijaya" },
+  { id: "15", time: "07:55:42", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Imunisasi anak", permission: "read:medical", status: "valid", block: 481947, hash: "0x22aa66bd", nik: "3321100311700004", ownerName: "Nadia Wijaya" },
+];
+
+const SAMPLE_NIKS = [
+  { nik: "3201234567893821", label: "Andi Pratama" },
+  { nik: "3175098712340007", label: "Siti Nurhaliza" },
+  { nik: "3273014509881122", label: "Budi Santoso" },
+  { nik: "3321100311700001", label: "Hendra Wijaya" },
+  { nik: "3321100311700002", label: "Maya Wijaya" },
+  { nik: "3321100311700003", label: "Rio Wijaya" },
+  { nik: "3321100311700004", label: "Nadia Wijaya" },
 ];
 
 const RECENT_BLOCKS = [
@@ -87,7 +105,7 @@ function Dashboard() {
               nik={nik}
               setNik={setNik}
               submittedNik={submittedNik}
-              onSubmit={() => setSubmittedNik(nik)}
+              onSubmit={(v) => setSubmittedNik((v ?? nik).replace(/\D/g, "").slice(0, 16))}
               onClear={() => {
                 setNik("");
                 setSubmittedNik("");
@@ -122,7 +140,7 @@ function NikSearch({
   nik: string;
   setNik: (v: string) => void;
   submittedNik: string;
-  onSubmit: () => void;
+  onSubmit: (value?: string) => void;
   onClear: () => void;
   resultCount: number | null;
 }) {
@@ -199,6 +217,25 @@ function NikSearch({
           NIK terdiri dari 16 digit · saat ini {formatted.length}/16
         </p>
       )}
+
+      <div className="mt-4 border-t border-border pt-3">
+        <p className="mb-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+          NIK contoh tersedia (klik untuk telusuri)
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {SAMPLE_NIKS.map((s) => (
+            <button
+              key={s.nik}
+              type="button"
+              onClick={() => { setNik(s.nik); onSubmit(s.nik); }}
+              className="group rounded-md border border-border bg-background px-2 py-1 text-left transition-colors hover:border-accent hover:bg-accent/5"
+            >
+              <span className="block font-mono text-[11px] text-foreground">{s.nik}</span>
+              <span className="block text-[10px] text-muted-foreground group-hover:text-accent">{s.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
