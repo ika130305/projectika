@@ -367,14 +367,24 @@ function Sidebar() {
   );
 }
 
-function TopBar({ alerts }: { alerts: number }) {
+function TopBar({ alerts, mobileOpen, setMobileOpen }: { alerts: number; mobileOpen: boolean; setMobileOpen: (v: boolean) => void }) {
   return (
     <div className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
-      <div className="flex h-14 items-center justify-between px-6">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span className="font-mono text-xs">/dashboard</span>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-foreground">Aktivitas</span>
+      <div className="flex h-14 items-center justify-between px-4 lg:px-6">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="grid h-9 w-9 place-items-center rounded-md border border-border bg-card transition-colors hover:bg-surface lg:hidden"
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span className="font-mono text-xs">/dashboard</span>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-foreground">Aktivitas</span>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <button className="relative grid h-9 w-9 place-items-center rounded-md border border-border bg-card transition-colors hover:bg-surface">
@@ -385,7 +395,7 @@ function TopBar({ alerts }: { alerts: number }) {
               </span>
             )}
           </button>
-          <div className="flex items-center gap-3 rounded-md border border-border bg-card px-3 py-1.5">
+          <div className="hidden items-center gap-3 rounded-md border border-border bg-card px-3 py-1.5 sm:flex">
             <div className="grid h-7 w-7 place-items-center rounded-full bg-accent text-accent-foreground font-display text-xs font-bold">A</div>
             <div className="text-xs">
               <p className="font-medium leading-tight">Andi Pratama</p>
