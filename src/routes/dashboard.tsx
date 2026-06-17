@@ -166,10 +166,23 @@ function Dashboard() {
 
   const alerts = LOGS.filter((l) => l.status === "alert").length;
 
+  const resetDashboard = () => {
+    setFilter("all");
+    setQuery("");
+    setNik("");
+    setSubmittedNik("");
+    setMobileOpen(false);
+
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEY);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-surface">
       <div className="flex">
-        <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+        <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} onDashboardReset={resetDashboard} />
         <main className="flex-1">
           <TopBar alerts={alerts} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 
@@ -314,7 +327,13 @@ function NikSearch({
   );
 }
 
-function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; setMobileOpen: (v: boolean) => void }) {
+function Sidebar({
+  mobileOpen, setMobileOpen, onDashboardReset,
+}: {
+  mobileOpen: boolean;
+  setMobileOpen: (v: boolean) => void;
+  onDashboardReset: () => void;
+}) {
   const items = [
     { icon: Activity, label: "Aktivitas", active: true },
     { icon: Bell, label: "Notifikasi" },
@@ -326,7 +345,7 @@ function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; setMobile
 
   const sidebarContent = (
     <>
-      <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2" onClick={() => setMobileOpen(false)}>
+      <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2" onClick={onDashboardReset}>
         <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
           <Shield className="h-4 w-4" />
         </div>
@@ -352,7 +371,7 @@ function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; setMobile
       <Link
         to="/dashboard"
         className="mt-6 flex items-center gap-2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
-        onClick={() => setMobileOpen(false)}
+        onClick={onDashboardReset}
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke dashboard
       </Link>
