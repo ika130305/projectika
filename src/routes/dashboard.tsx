@@ -348,10 +348,10 @@ function Sidebar() {
       </nav>
 
       <Link
-        to="/"
+        to="/dashboard"
         className="mt-6 flex items-center gap-2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
-        <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke beranda
+        <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke dashboard
       </Link>
 
       <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-border bg-surface p-3">
