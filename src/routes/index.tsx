@@ -273,7 +273,7 @@ function LedgerPreview() {
           <div className="ledger-scroll p-4 font-mono text-xs">
             {loop.map((b, i) => (
               <div key={i} className="mb-2 grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md border border-border bg-surface px-3 py-2.5">
-                <span className="text-accent">#{b.n.toLocaleString()}</span>
+                <span className="text-accent">#{b.n.toLocaleString('en-US')}</span>
                 <div>
                   <p className="text-foreground">{b.e}</p>
                   <p className="text-[10px] text-muted-foreground">{b.p}</p>
