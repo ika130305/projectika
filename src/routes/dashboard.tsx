@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import {
   Shield, Bell, Activity, Database, Users, AlertTriangle, CheckCircle2,
   Search, ChevronRight, ArrowLeft, FileText, Settings, Filter,
+  Fingerprint, XCircle,
 } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
@@ -26,29 +27,40 @@ interface LogEntry {
   status: LogStatus;
   block: number;
   hash: string;
+  nik: string;
+  ownerName: string;
 }
 
 const LOGS: LogEntry[] = [
-  { id: "1", time: "14:32:08", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Verifikasi klaim asuransi", permission: "read:medical", status: "valid", block: 482109, hash: "0xa3f192e8" },
-  { id: "2", time: "14:28:51", entity: "Bank Mandiri", category: "Identitas", purpose: "KYC pembukaan rekening", permission: "read:identity", status: "valid", block: 482107, hash: "0x7c2b41d9" },
-  { id: "3", time: "14:21:14", entity: "Unknown Entity (TX-9E44)", category: "NIK & Alamat", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 482104, hash: "0x9e44bb02" },
-  { id: "4", time: "13:58:02", entity: "Tokopedia", category: "Profil", purpose: "Update alamat pengiriman", permission: "write:profile", status: "valid", block: 482099, hash: "0x5d187a3c" },
-  { id: "5", time: "13:44:37", entity: "Gojek", category: "Lokasi", purpose: "Pencocokan driver terdekat", permission: "read:location", status: "valid", block: 482094, hash: "0x2f81cc45" },
-  { id: "6", time: "12:55:19", entity: "Telkomsel", category: "Kontak", purpose: "Verifikasi nomor telepon", permission: "read:phone", status: "pending", block: 482082, hash: "0x88a30f12" },
-  { id: "7", time: "11:30:41", entity: "Pemerintah Daerah", category: "Identitas", purpose: "Validasi domisili", permission: "read:identity", status: "valid", block: 482061, hash: "0x4c19ee77" },
-  { id: "8", time: "10:12:55", entity: "Data Broker XY", category: "Profil", purpose: "Aktivitas marketing", permission: "—", status: "alert", block: 482044, hash: "0xbb04dd91" },
+  { id: "1", time: "14:32:08", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Verifikasi klaim asuransi", permission: "read:medical", status: "valid", block: 482109, hash: "0xa3f192e8", nik: "3201234567893821", ownerName: "Andi Pratama" },
+  { id: "2", time: "14:28:51", entity: "Bank Mandiri", category: "Identitas", purpose: "KYC pembukaan rekening", permission: "read:identity", status: "valid", block: 482107, hash: "0x7c2b41d9", nik: "3201234567893821", ownerName: "Andi Pratama" },
+  { id: "3", time: "14:21:14", entity: "Unknown Entity (TX-9E44)", category: "NIK & Alamat", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 482104, hash: "0x9e44bb02", nik: "3201234567893821", ownerName: "Andi Pratama" },
+  { id: "4", time: "13:58:02", entity: "Tokopedia", category: "Profil", purpose: "Update alamat pengiriman", permission: "write:profile", status: "valid", block: 482099, hash: "0x5d187a3c", nik: "3175098712340007", ownerName: "Siti Nurhaliza" },
+  { id: "5", time: "13:44:37", entity: "Gojek", category: "Lokasi", purpose: "Pencocokan driver terdekat", permission: "read:location", status: "valid", block: 482094, hash: "0x2f81cc45", nik: "3175098712340007", ownerName: "Siti Nurhaliza" },
+  { id: "6", time: "12:55:19", entity: "Telkomsel", category: "Kontak", purpose: "Verifikasi nomor telepon", permission: "read:phone", status: "pending", block: 482082, hash: "0x88a30f12", nik: "3273014509881122", ownerName: "Budi Santoso" },
+  { id: "7", time: "11:30:41", entity: "Pemerintah Daerah", category: "Identitas", purpose: "Validasi domisili", permission: "read:identity", status: "valid", block: 482061, hash: "0x4c19ee77", nik: "3273014509881122", ownerName: "Budi Santoso" },
+  { id: "8", time: "10:12:55", entity: "Data Broker XY", category: "Profil", purpose: "Aktivitas marketing", permission: "—", status: "alert", block: 482044, hash: "0xbb04dd91", nik: "3273014509881122", ownerName: "Budi Santoso" },
 ];
 
 function Dashboard() {
   const [filter, setFilter] = useState<"all" | LogStatus>("all");
   const [query, setQuery] = useState("");
+  const [nik, setNik] = useState("");
+  const [submittedNik, setSubmittedNik] = useState("");
+
+  const nikDigits = submittedNik.replace(/\D/g, "");
 
   const filtered = useMemo(
     () =>
-      LOGS.filter((l) => (filter === "all" ? true : l.status === filter)).filter((l) =>
-        [l.entity, l.category, l.purpose, l.permission].join(" ").toLowerCase().includes(query.toLowerCase()),
-      ),
-    [filter, query],
+      LOGS.filter((l) => (filter === "all" ? true : l.status === filter))
+        .filter((l) => (nikDigits ? l.nik.includes(nikDigits) : true))
+        .filter((l) =>
+          [l.entity, l.category, l.purpose, l.permission, l.nik, l.ownerName]
+            .join(" ")
+            .toLowerCase()
+            .includes(query.toLowerCase()),
+        ),
+    [filter, query, nikDigits],
   );
 
   const alerts = LOGS.filter((l) => l.status === "alert").length;
@@ -62,6 +74,17 @@ function Dashboard() {
 
           <div className="mx-auto max-w-7xl space-y-6 p-6 lg:p-8">
             <Header />
+            <NikSearch
+              nik={nik}
+              setNik={setNik}
+              submittedNik={submittedNik}
+              onSubmit={() => setSubmittedNik(nik)}
+              onClear={() => {
+                setNik("");
+                setSubmittedNik("");
+              }}
+              resultCount={nikDigits ? filtered.length : null}
+            />
             <KpiGrid />
             <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
               <ActivityCard
@@ -80,6 +103,93 @@ function Dashboard() {
           </div>
         </main>
       </div>
+    </div>
+  );
+}
+
+function NikSearch({
+  nik, setNik, submittedNik, onSubmit, onClear, resultCount,
+}: {
+  nik: string;
+  setNik: (v: string) => void;
+  submittedNik: string;
+  onSubmit: () => void;
+  onClear: () => void;
+  resultCount: number | null;
+}) {
+  const formatted = nik.replace(/\D/g, "").slice(0, 16);
+  const isValidLength = formatted.length === 16;
+  return (
+    <div className="rounded-xl border border-border bg-card p-5 shadow-card">
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="flex items-center gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-md bg-accent/10 text-accent">
+            <Fingerprint className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="font-display text-base font-semibold">Cari berdasarkan NIK</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Telusuri jejak akses untuk Nomor Induk Kependudukan tertentu.
+            </p>
+          </div>
+        </div>
+        <form
+          className="flex flex-1 flex-wrap items-center gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setNik(formatted);
+            onSubmit();
+          }}
+        >
+          <div className="relative min-w-[260px] flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              value={formatted}
+              onChange={(e) => setNik(e.target.value)}
+              inputMode="numeric"
+              maxLength={16}
+              placeholder="Masukkan 16 digit NIK..."
+              className="h-10 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm tracking-wider outline-none transition-colors focus:border-ring"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={formatted.length === 0}
+            className="h-10 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+          >
+            Telusuri
+          </button>
+          {submittedNik && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="grid h-10 w-10 place-items-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="Reset pencarian NIK"
+            >
+              <XCircle className="h-4 w-4" />
+            </button>
+          )}
+        </form>
+      </div>
+
+      {submittedNik && (
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-md border border-border bg-surface px-3 py-2 text-xs">
+          <span className="font-mono uppercase tracking-wider text-muted-foreground">NIK aktif</span>
+          <span className="font-mono font-medium text-foreground">{submittedNik}</span>
+          <span className="text-muted-foreground">·</span>
+          {resultCount !== null && resultCount > 0 ? (
+            <span className="text-success">{resultCount} entri ditemukan</span>
+          ) : (
+            <span className="text-destructive">Tidak ada entri untuk NIK ini</span>
+          )}
+        </div>
+      )}
+
+      {nik && !isValidLength && !submittedNik && (
+        <p className="mt-3 font-mono text-[10px] text-warning">
+          NIK terdiri dari 16 digit · saat ini {formatted.length}/16
+        </p>
+      )}
     </div>
   );
 }
@@ -275,7 +385,10 @@ function ActivityCard({
               <p className="mt-0.5 truncate text-xs text-muted-foreground">
                 <span className="text-foreground/80">{log.category}</span> · {log.purpose}
               </p>
-              <div className="mt-1.5 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
+              <div className="mt-1.5 flex flex-wrap items-center gap-2 font-mono text-[10px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1 rounded bg-accent/10 px-1.5 py-0.5 text-accent">
+                  <Fingerprint className="h-3 w-3" /> NIK {log.nik}
+                </span>
                 <span className="rounded bg-surface px-1.5 py-0.5">{log.permission}</span>
                 <span>block #{log.block.toLocaleString()}</span>
                 <span>{log.hash}</span>
