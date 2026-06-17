@@ -169,9 +169,9 @@ function Dashboard() {
   return (
     <div className="min-h-screen bg-surface">
       <div className="flex">
-        <Sidebar />
+        <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <main className="flex-1">
-          <TopBar alerts={alerts} />
+          <TopBar alerts={alerts} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 
           <div className="mx-auto max-w-7xl space-y-6 p-6 lg:p-8">
             <Header />
