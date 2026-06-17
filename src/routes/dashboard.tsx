@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Shield, Bell, Activity, Database, Users, AlertTriangle, CheckCircle2,
   Search, ChevronRight, ArrowLeft, FileText, Settings, Filter,
-  Fingerprint, XCircle,
+  Fingerprint, XCircle, Menu, X,
 } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
@@ -120,6 +120,7 @@ function Dashboard() {
   const [nik, setNik] = useState("");
   const [submittedNik, setSubmittedNik] = useState("");
   const [hydrated, setHydrated] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // Load persisted state on mount (client only — avoids SSR hydration mismatch)
   useEffect(() => {
@@ -168,9 +169,9 @@ function Dashboard() {
   return (
     <div className="min-h-screen bg-surface">
       <div className="flex">
-        <Sidebar />
+        <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         <main className="flex-1">
-          <TopBar alerts={alerts} />
+          <TopBar alerts={alerts} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 
           <div className="mx-auto max-w-7xl space-y-6 p-6 lg:p-8">
             <Header />
@@ -313,7 +314,7 @@ function NikSearch({
   );
 }
 
-function Sidebar() {
+function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; setMobileOpen: (v: boolean) => void }) {
   const items = [
     { icon: Activity, label: "Aktivitas", active: true },
     { icon: Bell, label: "Notifikasi" },
@@ -322,9 +323,10 @@ function Sidebar() {
     { icon: FileText, label: "Laporan" },
     { icon: Settings, label: "Pengaturan" },
   ];
-  return (
-    <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-border bg-background p-4 lg:block">
-      <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2">
+
+  const sidebarContent = (
+    <>
+      <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2" onClick={() => setMobileOpen(false)}>
         <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
           <Shield className="h-4 w-4" />
         </div>
@@ -350,6 +352,7 @@ function Sidebar() {
       <Link
         to="/dashboard"
         className="mt-6 flex items-center gap-2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        onClick={() => setMobileOpen(false)}
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke dashboard
       </Link>
@@ -362,18 +365,46 @@ function Sidebar() {
         </div>
         <p className="mt-1 font-mono text-[10px] text-muted-foreground">Block #482,109</p>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-border bg-background p-4 lg:block">
+        {sidebarContent}
+      </aside>
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
+          <aside className="absolute left-0 top-0 h-full w-60 bg-background p-4 shadow-xl">
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }
 
-function TopBar({ alerts }: { alerts: number }) {
+function TopBar({ alerts, mobileOpen, setMobileOpen }: { alerts: number; mobileOpen: boolean; setMobileOpen: (v: boolean) => void }) {
   return (
     <div className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
-      <div className="flex h-14 items-center justify-between px-6">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span className="font-mono text-xs">/dashboard</span>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-foreground">Aktivitas</span>
+      <div className="flex h-14 items-center justify-between px-4 lg:px-6">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="grid h-9 w-9 place-items-center rounded-md border border-border bg-card transition-colors hover:bg-surface lg:hidden"
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span className="font-mono text-xs">/dashboard</span>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-foreground">Aktivitas</span>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <button className="relative grid h-9 w-9 place-items-center rounded-md border border-border bg-card transition-colors hover:bg-surface">
@@ -384,7 +415,7 @@ function TopBar({ alerts }: { alerts: number }) {
               </span>
             )}
           </button>
-          <div className="flex items-center gap-3 rounded-md border border-border bg-card px-3 py-1.5">
+          <div className="hidden items-center gap-3 rounded-md border border-border bg-card px-3 py-1.5 sm:flex">
             <div className="grid h-7 w-7 place-items-center rounded-full bg-accent text-accent-foreground font-display text-xs font-bold">A</div>
             <div className="text-xs">
               <p className="font-medium leading-tight">Andi Pratama</p>
