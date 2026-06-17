@@ -1,6 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Shield, Eye, Bell, Link2, Lock, Activity, ArrowRight, CheckCircle2 } from "lucide-react";
 
+const LEDGER_BLOCKS = Array.from({ length: 14 }, (_, i) => ({
+  h: `0x${["a3f1", "7c2b", "9e44", "5d18", "2f81", "88a3", "4c19", "bb04", "d210", "6a7f", "c843", "f09d", "1b62", "e715"][i]}...${["92e8", "41d9", "bb02", "7a3c", "cc45", "0f12", "ee77", "dd91", "ab38", "19ef", "70ca", "8021", "43be", "59ad"][i]}`,
+  e: ["BPJS Kesehatan", "Bank BCA", "Gojek", "Pemerintah Daerah", "Tokopedia", "Telkomsel"][i % 6],
+  p: ["read:medical", "read:identity", "read:location", "read:profile", "write:profile"][i % 5],
+  n: 482109 - i,
+}));
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -239,13 +246,7 @@ function HowItWorks() {
 }
 
 function LedgerPreview() {
-  const blocks = Array.from({ length: 14 }, (_, i) => ({
-    h: `0x${Math.random().toString(16).slice(2, 6)}...${Math.random().toString(16).slice(2, 6)}`,
-    e: ["BPJS Kesehatan", "Bank BCA", "Gojek", "Pemerintah Daerah", "Tokopedia", "Telkomsel"][i % 6],
-    p: ["read:medical", "read:identity", "read:location", "read:profile", "write:profile"][i % 5],
-    n: 482109 - i,
-  }));
-  const loop = [...blocks, ...blocks];
+  const loop = [...LEDGER_BLOCKS, ...LEDGER_BLOCKS];
 
   return (
     <section id="ledger" className="mx-auto max-w-7xl px-6 py-24">
