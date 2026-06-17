@@ -48,6 +48,36 @@ const LOGS: LogEntry[] = [
   { id: "13", time: "08:33:50", entity: "Unknown Entity (TX-7F12)", category: "NIK & Alamat", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 481978, hash: "0x7f12abcd", nik: "3321100311700002", ownerName: "Maya Wijaya" },
   { id: "14", time: "08:10:17", entity: "Sekolah SDN 03", category: "Identitas Anak", purpose: "Pendaftaran ulang siswa", permission: "read:identity", status: "valid", block: 481960, hash: "0x4488ee21", nik: "3321100311700003", ownerName: "Rio Wijaya" },
   { id: "15", time: "07:55:42", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Imunisasi anak", permission: "read:medical", status: "valid", block: 481947, hash: "0x22aa66bd", nik: "3321100311700004", ownerName: "Nadia Wijaya" },
+  // Keluarga Susanto (Surabaya)
+  { id: "16", time: "07:42:18", entity: "Bank Mandiri", category: "Identitas", purpose: "Pengajuan KPR", permission: "read:identity", status: "valid", block: 481932, hash: "0x12ab34cd", nik: "3578123405770011", ownerName: "Eko Susanto" },
+  { id: "17", time: "07:21:55", entity: "Pajak Online", category: "NPWP", purpose: "Pelaporan SPT tahunan", permission: "read:tax", status: "valid", block: 481918, hash: "0x56ef78ab", nik: "3578123405770011", ownerName: "Eko Susanto" },
+  { id: "18", time: "06:58:09", entity: "Unknown Entity (TX-3B17)", category: "NIK & NPWP", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 481902, hash: "0x3b17ffaa", nik: "3578123405770011", ownerName: "Eko Susanto" },
+  { id: "19", time: "06:33:44", entity: "RS Premier Surabaya", category: "Rekam Medis", purpose: "Rawat jalan", permission: "read:medical", status: "valid", block: 481889, hash: "0x90ab12cd", nik: "3578123410820022", ownerName: "Linda Susanto" },
+  { id: "20", time: "06:10:21", entity: "BPJS Ketenagakerjaan", category: "Kepegawaian", purpose: "Pencairan JHT", permission: "read:employment", status: "pending", block: 481871, hash: "0x77cc88dd", nik: "3578123410820022", ownerName: "Linda Susanto" },
+  { id: "21", time: "05:48:50", entity: "Universitas Airlangga", category: "Identitas", purpose: "Pendaftaran mahasiswa baru", permission: "read:identity", status: "valid", block: 481855, hash: "0x44ee55ff", nik: "3578120207040033", ownerName: "Dewi Susanto" },
+  // Keluarga Hartono (Bandung)
+  { id: "22", time: "05:30:12", entity: "Bank BNI", category: "Identitas", purpose: "Pembukaan rekening payroll", permission: "read:identity", status: "valid", block: 481840, hash: "0xaa11bb22", nik: "3273019006850055", ownerName: "Rudi Hartono" },
+  { id: "23", time: "05:12:33", entity: "BPJS Kesehatan", category: "Rekam Medis", purpose: "Klaim rawat inap", permission: "read:medical", status: "valid", block: 481826, hash: "0xcc33dd44", nik: "3273019006850055", ownerName: "Rudi Hartono" },
+  { id: "24", time: "04:55:01", entity: "Telkomsel", category: "Kontak", purpose: "Aktivasi paket data", permission: "read:phone", status: "valid", block: 481812, hash: "0xee55ff66", nik: "3273012508870066", ownerName: "Wulan Hartono" },
+  { id: "25", time: "04:30:47", entity: "Unknown Entity (TX-5C29)", category: "Profil", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 481798, hash: "0x5c29bbcc", nik: "3273012508870066", ownerName: "Wulan Hartono" },
+  { id: "26", time: "04:11:25", entity: "Sekolah SMP 12", category: "Identitas Anak", purpose: "Daftar ulang", permission: "read:identity", status: "valid", block: 481782, hash: "0x99aa00bb", nik: "3273011403100077", ownerName: "Kevin Hartono" },
+  // Keluarga Nasution (Medan)
+  { id: "27", time: "03:48:19", entity: "Pemerintah Daerah", category: "Identitas", purpose: "Pengurusan KTP", permission: "read:identity", status: "valid", block: 481765, hash: "0x11cc22dd", nik: "1271050308780088", ownerName: "Reza Nasution" },
+  { id: "28", time: "03:22:54", entity: "Bank BRI", category: "Identitas", purpose: "Pengajuan KUR", permission: "read:identity", status: "pending", block: 481749, hash: "0x33ee44ff", nik: "1271050308780088", ownerName: "Reza Nasution" },
+  { id: "29", time: "02:58:30", entity: "Shopee", category: "Profil", purpose: "Verifikasi penjual", permission: "read:profile", status: "valid", block: 481733, hash: "0x66aa77bb", nik: "1271052012920099", ownerName: "Sari Nasution" },
+  { id: "30", time: "02:33:14", entity: "Data Broker ZQ", category: "NIK & Alamat", purpose: "Aktivitas marketing", permission: "—", status: "alert", block: 481718, hash: "0x88cc99dd", nik: "1271052012920099", ownerName: "Sari Nasution" },
+  // Keluarga Pramesti (Yogyakarta)
+  { id: "31", time: "02:11:48", entity: "RS Sardjito", category: "Rekam Medis", purpose: "Kontrol kehamilan", permission: "read:medical", status: "valid", block: 481702, hash: "0xab12cd34", nik: "3471041811890101", ownerName: "Galih Pramesti" },
+  { id: "32", time: "01:48:25", entity: "Bank BTN", category: "Identitas", purpose: "Cicilan rumah", permission: "read:identity", status: "valid", block: 481687, hash: "0xef56ab78", nik: "3471041811890101", ownerName: "Galih Pramesti" },
+  { id: "33", time: "01:22:09", entity: "Gojek", category: "Lokasi", purpose: "Pencocokan driver", permission: "read:location", status: "valid", block: 481671, hash: "0xcd34ef56", nik: "3471042309910102", ownerName: "Intan Pramesti" },
+  { id: "34", time: "00:55:42", entity: "Universitas Gadjah Mada", category: "Identitas", purpose: "Verifikasi alumni", permission: "read:identity", status: "valid", block: 481654, hash: "0x12ef34ab", nik: "3471042309910102", ownerName: "Intan Pramesti" },
+  // Individu lainnya
+  { id: "35", time: "00:30:17", entity: "Tokopedia", category: "Profil", purpose: "Verifikasi seller", permission: "read:profile", status: "valid", block: 481640, hash: "0x56cd78ef", nik: "3674051207950201", ownerName: "Yusuf Maulana" },
+  { id: "36", time: "00:10:03", entity: "Unknown Entity (TX-AA88)", category: "NIK", purpose: "Tujuan tidak dideklarasikan", permission: "—", status: "alert", block: 481625, hash: "0xaa88bbcc", nik: "3674051207950201", ownerName: "Yusuf Maulana" },
+  { id: "37", time: "23:48:31", entity: "OJK", category: "Identitas", purpose: "Cek SLIK", permission: "read:credit", status: "valid", block: 481609, hash: "0xdd99eeff", nik: "3215042811880301", ownerName: "Putri Lestari" },
+  { id: "38", time: "23:21:08", entity: "Allianz", category: "Asuransi", purpose: "Pengajuan polis", permission: "read:insurance", status: "pending", block: 481592, hash: "0x11ff22aa", nik: "3215042811880301", ownerName: "Putri Lestari" },
+  { id: "39", time: "22:55:46", entity: "Pemerintah Daerah", category: "Identitas", purpose: "Pengurusan paspor", permission: "read:identity", status: "valid", block: 481576, hash: "0x33aa44bb", nik: "5171010606820401", ownerName: "Made Wirawan" },
+  { id: "40", time: "22:30:19", entity: "Bank Mandiri", category: "Identitas", purpose: "Penggantian kartu ATM", permission: "read:identity", status: "valid", block: 481560, hash: "0x55bb66cc", nik: "5171010606820401", ownerName: "Made Wirawan" },
 ];
 
 const SAMPLE_NIKS = [
@@ -58,6 +88,19 @@ const SAMPLE_NIKS = [
   { nik: "3321100311700002", label: "Maya Wijaya" },
   { nik: "3321100311700003", label: "Rio Wijaya" },
   { nik: "3321100311700004", label: "Nadia Wijaya" },
+  { nik: "3578123405770011", label: "Eko Susanto" },
+  { nik: "3578123410820022", label: "Linda Susanto" },
+  { nik: "3578120207040033", label: "Dewi Susanto" },
+  { nik: "3273019006850055", label: "Rudi Hartono" },
+  { nik: "3273012508870066", label: "Wulan Hartono" },
+  { nik: "3273011403100077", label: "Kevin Hartono" },
+  { nik: "1271050308780088", label: "Reza Nasution" },
+  { nik: "1271052012920099", label: "Sari Nasution" },
+  { nik: "3471041811890101", label: "Galih Pramesti" },
+  { nik: "3471042309910102", label: "Intan Pramesti" },
+  { nik: "3674051207950201", label: "Yusuf Maulana" },
+  { nik: "3215042811880301", label: "Putri Lestari" },
+  { nik: "5171010606820401", label: "Made Wirawan" },
 ];
 
 const RECENT_BLOCKS = [
