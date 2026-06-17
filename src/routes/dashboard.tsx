@@ -314,7 +314,7 @@ function NikSearch({
   );
 }
 
-function Sidebar() {
+function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean; setMobileOpen: (v: boolean) => void }) {
   const items = [
     { icon: Activity, label: "Aktivitas", active: true },
     { icon: Bell, label: "Notifikasi" },
@@ -323,9 +323,10 @@ function Sidebar() {
     { icon: FileText, label: "Laporan" },
     { icon: Settings, label: "Pengaturan" },
   ];
-  return (
-    <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-border bg-background p-4 lg:block">
-      <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2">
+
+  const sidebarContent = (
+    <>
+      <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2" onClick={() => setMobileOpen(false)}>
         <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
           <Shield className="h-4 w-4" />
         </div>
@@ -351,6 +352,7 @@ function Sidebar() {
       <Link
         to="/dashboard"
         className="mt-6 flex items-center gap-2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        onClick={() => setMobileOpen(false)}
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke dashboard
       </Link>
@@ -363,7 +365,25 @@ function Sidebar() {
         </div>
         <p className="mt-1 font-mono text-[10px] text-muted-foreground">Block #482,109</p>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-border bg-background p-4 lg:block">
+        {sidebarContent}
+      </aside>
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
+          <aside className="absolute left-0 top-0 h-full w-60 bg-background p-4 shadow-xl">
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }
 
