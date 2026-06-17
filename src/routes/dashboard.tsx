@@ -385,7 +385,10 @@ function ActivityCard({
               <p className="mt-0.5 truncate text-xs text-muted-foreground">
                 <span className="text-foreground/80">{log.category}</span> · {log.purpose}
               </p>
-              <div className="mt-1.5 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
+              <div className="mt-1.5 flex flex-wrap items-center gap-2 font-mono text-[10px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1 rounded bg-accent/10 px-1.5 py-0.5 text-accent">
+                  <Fingerprint className="h-3 w-3" /> NIK {log.nik}
+                </span>
                 <span className="rounded bg-surface px-1.5 py-0.5">{log.permission}</span>
                 <span>block #{log.block.toLocaleString()}</span>
                 <span>{log.hash}</span>
