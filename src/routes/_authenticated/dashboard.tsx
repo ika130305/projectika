@@ -1,12 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
   Shield, Bell, Activity, Database, Users, AlertTriangle, CheckCircle2,
   Search, ChevronRight, ArrowLeft, FileText, Settings, Filter,
-  Fingerprint, XCircle, Menu, X,
+  Fingerprint, XCircle, Menu, X, LogOut,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard · ChainGuard" },
@@ -407,6 +408,27 @@ function Sidebar({
 }
 
 function TopBar({ alerts, mobileOpen, setMobileOpen }: { alerts: number; mobileOpen: boolean; setMobileOpen: (v: boolean) => void }) {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      const u = data.user;
+      if (!u) return;
+      setEmail(u.email ?? "");
+      const fullName = (u.user_metadata?.full_name as string | undefined) ?? (u.user_metadata?.name as string | undefined);
+      setName(fullName ?? (u.email?.split("@")[0] ?? "Pengguna"));
+    });
+  }, []);
+
+  const initial = (name || email || "U").trim().charAt(0).toUpperCase();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/login" });
+  };
+
   return (
     <div className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="flex h-14 items-center justify-between px-4 lg:px-6">
@@ -435,12 +457,21 @@ function TopBar({ alerts, mobileOpen, setMobileOpen }: { alerts: number; mobileO
             )}
           </button>
           <div className="hidden items-center gap-3 rounded-md border border-border bg-card px-3 py-1.5 sm:flex">
-            <div className="grid h-7 w-7 place-items-center rounded-full bg-accent text-accent-foreground font-display text-xs font-bold">A</div>
-            <div className="text-xs">
-              <p className="font-medium leading-tight">Andi Pratama</p>
-              <p className="font-mono text-[10px] text-muted-foreground">NIK ****3821</p>
+            <div className="grid h-7 w-7 place-items-center rounded-full bg-accent text-accent-foreground font-display text-xs font-bold">{initial}</div>
+            <div className="max-w-[160px] text-xs">
+              <p className="truncate font-medium leading-tight">{name || "Pengguna"}</p>
+              <p className="truncate font-mono text-[10px] text-muted-foreground">{email}</p>
             </div>
           </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-card px-3 text-xs font-medium transition-colors hover:bg-surface"
+            aria-label="Keluar"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Keluar</span>
+          </button>
         </div>
       </div>
     </div>
