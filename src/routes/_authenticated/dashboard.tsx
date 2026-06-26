@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
   Shield, Bell, Activity, Database, Users, AlertTriangle, CheckCircle2,
   Search, ChevronRight, ArrowLeft, FileText, Settings, Filter,
-  Fingerprint, XCircle, Menu, X,
+  Fingerprint, XCircle, Menu, X, LogOut,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
